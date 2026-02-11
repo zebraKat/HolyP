@@ -1,11 +1,26 @@
 local Diagnostic = {}
 
 Diagnostic.Mode = {
-	Warn = "WARN",
-	Error = "ERROR"
+	Warn = 0,
+	Error = 1, 
+	__Max__ = 1
 }
 
+--[[
+--	Creates a new Diagnostic.
+--	Takes a message which is a string,
+--	a mode which is an enum (Diagnostic.Mode),
+--	and a position which is a Position
+--]]
 function Diagnostic.New(message, mode, position)
+	if type(message) ~= "string" then error("Expected a string for diagnostic message.") end
+	if type(mode) ~= "number" or mode > Diagnostic.Mode.__Max__ or mode < 0 then
+		error("Expected a number / enum for diagnostic mode.")
+	end
+	if type(position) ~= "table" or position.x == nil or position.y == nil then
+		error("Expected a valid Position for diagnostic.")
+	end
+
 	local self = {
 		Message = message,
 		Mode = mode,
