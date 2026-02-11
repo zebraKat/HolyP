@@ -16,13 +16,17 @@
 --]]
 
 
+
+
 --[[
 --	When requiring files, do files from the util folder first.
 --	Then, require the other files afterwards.
 --]]
 
 
---[[ There should be no space between function name and the arguments. ]]--
+--[[
+--	There should be no space between function name and the arguments.
+--]]
 
 --[[
 --	Do this!
@@ -110,4 +114,8 @@ local function MyFunction(Arg1, Arg2, CoolBox) end
 
 --[[
 --	Ensure the types of variables in functions using the `type` function.
+--]]
+
+--[[
+--	When calling something that returns a value that you want to ignore, assign it to _.
 --]]
