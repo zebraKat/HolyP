@@ -11,7 +11,8 @@ and it removes the "print if its an expression".
 It of course also doesn't have inline assembly as this language isn't compiled, it is interpereted.
 HolyP also removes some of the preprocessor. The only preprocessor instructions it has is:
 - Include
-- Assert
+- Define
+- Undefine
 
 ### Syntax
 ```HC

@@ -81,7 +81,8 @@ Token.Types = {
 	--]]
 	--[[ +----PREPROCCESSOR----+ ]]--
 	PreProcInclude   = "TK_PREPROC_INCLUDE", -- #include
-	PreProcAssert    = "TK_PREPROC_ASSERT",  -- #assert
+	PreProcDefine    = "TK_PREPROC_DEFINE",  -- #def
+	PreProcUndefine    = "TK_PREPROC_UNDEFINE",  -- #undef
 
 	--[[ +----DIRECTIVES----+ ]]--
 	DirDate = "TK_DIRECTIVE_DATE", -- __DATE__
