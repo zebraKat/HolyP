@@ -15,7 +15,7 @@ Tester.Test("Tokenize Keywords", function()
 	local Result = l.Tokenize()
 	assert(#l.Diagnostics == 0, "Diagnostics > 0")
 	assert(Result[1].Type == Token.Types.TypeU0, "Expected TokenType TypeU0. "..Result[1].Type)
-	assert(Result[2].Type == Token.Types.KeywordIf, "Expected TokenType KeywordIf. "..Result[1].Type)
+	assert(Result[2].Type == Token.Types.KeywordIf, "Expected TokenType KeywordIf. "..Result[2].Type)
 end)
 
 Tester.Test("Tokenize Identifiers", function()
@@ -73,6 +73,15 @@ Tester.Test("Tokenize Floats", function()
 	assert(#l.Diagnostics == 0, "Diagnostics > 0")
 	assert(Result[1].Type == Token.Types.Float, "Expected TokenType Float. "..Result[1].Type)
 	assert(Result[1].Value == 12.5, "Result value unexpected. "..Result[1].Value)
+end)
+
+Tester.Test("Tokenize Symbols", function()
+	l.Source = [[* >=]]
+
+	local Result = l.Tokenize()
+	assert(#l.Diagnostics == 0, "Diagnostics > 0")
+	assert(Result[1].Type == Token.Types.Star, "Expected TokenType Star. "..Result[1].Type)
+	assert(Result[2].Type == Token.Types.GEq, "Expected TokenType GEq. "..Result[2].Type)
 end)
 
 Tester.Run()

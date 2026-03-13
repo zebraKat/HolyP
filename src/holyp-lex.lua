@@ -285,31 +285,57 @@ function Lexer.New(source, diagnostics)
 		elseif Symbol == ':' then
 			BaseToken.Type = Token.Types.Colon
 		elseif Symbol == '+' then
-			--[[ TODO: PlEq ]]--
 			BaseToken.Type = Token.Types.Plus
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.PlEq
+			end
 		elseif Symbol == '-' then
-			--[[ TODO: MiEq && DerefVal ]]--
 			BaseToken.Type = Token.Types.Minus
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.MiEq
+			elseif At() == '>' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.DerefVal
+			end
 		elseif Symbol == '*' then
-			--[[ TODO: StEq ]]--
 			BaseToken.Type = Token.Types.Star
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.StEq
+			end
 		elseif Symbol == '/' then
-			--[[ TODO: SlEq ]]--
 			BaseToken.Type = Token.Types.Slash
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.SlEq
+			end
 		elseif Symbol == '%' then
 			BaseToken.Type = Token.Types.Modulo
 		elseif Symbol == '=' then
-			--[[ TODO: EqEq ]]--
 			BaseToken.Type = Token.Types.Equal
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.EqEq
+			end
 		elseif Symbol == '<' then
-			--[[ TODO: LEq ]]--
 			BaseToken.Type = Token.Types.Less
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.LEq
+			end
 		elseif Symbol == '>' then
-			--[[ TODO: GEq ]]--
 			BaseToken.Type = Token.Types.Greater
+			if At() == '=' then
+				_ = Eat()
+				BaseToken.Type = Token.Types.GEq
+			end
 		end
 
-		if BaseToken.Type == "UNKNOWN" then
+		BaseToken.Span.To = ShallowCopy(self.Position)
+		BaseToken.Lexeme = string.sub(self.Source, StartIndex, self.Index - 1)
+		if BaseToken.Type == Token.Types.Unknown  then
 			table.insert(
 				self.Diagnostics,
 				Diagnostic.New(
