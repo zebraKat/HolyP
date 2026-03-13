@@ -9,6 +9,24 @@ Tester.Before(function()
 	l.Diagnostics = {}
 end)
 
+Tester.Test("Tokenize Keywords", function()
+	l.Source = [[U0 if]]
+
+	local Result = l.Tokenize()
+	assert(#l.Diagnostics == 0, "Diagnostics > 0")
+	assert(Result[1].Type == Token.Types.TypeU0, "Expected TokenType TypeU0. "..Result[1].Type)
+	assert(Result[2].Type == Token.Types.KeywordIf, "Expected TokenType KeywordIf. "..Result[1].Type)
+end)
+
+Tester.Test("Tokenize Identifiers", function()
+	l.Source = [[_identifier]]
+
+	local Result = l.Tokenize()
+	assert(#l.Diagnostics == 0, "Diagnostics > 0")
+	assert(Result[1].Type == Token.Types.Identifier, "Expected TokenType Identifier. "..Result[1].Type)
+	assert(Result[1].Lexeme == "_identifier", "Result Lexeme unexpected. "..Result[1].Lexeme)
+end)
+
 Tester.Test("Tokenize Strings", function()
 	l.Source = [["this is a test string"]]
 
@@ -28,6 +46,15 @@ Tester.Test("Tokenize Chars", function()
 	assert(#l.Diagnostics == 0, "Diagnostics > 0")
 	assert(Result[1].Type == Token.Types.Char, "Expected TokenType Char. "..Result[1].Type)
 	assert(Result[1].Value == 'a', "Result value unexpected. "..Result[1].Value)
+end)
+
+Tester.Test("Tokenize Underscore Numbers", function()
+	l.Source = [[1_200]]
+
+	local Result = l.Tokenize()
+	assert(#l.Diagnostics == 0, "Diagnostics > 0")
+	assert(Result[1].Type == Token.Types.Int, "Expected TokenType Int. "..Result[1].Type)
+	assert(Result[1].Value == 1200, "Result value unexpected. "..Result[1].Value)
 end)
 
 Tester.Test("Tokenize Ints", function()
