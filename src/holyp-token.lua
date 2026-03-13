@@ -5,6 +5,7 @@ local Token = {}
 Token.Types = {
 	--[[ +----MISC----+ ]]--
 	Identifier = "TK_IDENTIFIER",
+	Unknown    = "TK_UNKNOWN",
 	Eof        = "TK_EOF", -- End of file
 
 	--[[ +----LITERALS----+ ]]--
@@ -38,8 +39,8 @@ Token.Types = {
 	SlEq     = "TK_SLEQ",          -- /=
 	Less     = "TK_LESS",          -- <
 	Greater  = "TK_GREATER",       -- <
-	LEq      = "TK_LEQ",           -- <
-	GEq      = "TK_GEQ",           -- <
+	LEq      = "TK_LEQ",           -- <=
+	GEq      = "TK_GEQ",           -- >=
 
 	--[[ +----TYPES----+ ]]--
 	TypeInt    = "TK_TYPE_INT",    -- Int
@@ -76,23 +77,23 @@ Token.Types = {
 --[[ Returns whether the input is a valid token type ]]--
 function Token.IsValidTokenType(t)
 	if type(t) ~= "string" then return false end
-	if not table.find(Token.Types, t) then return false end
 	return true
 end
 
 --[[ Creates a new token. Takes in a type, lexeme, span, and optionally a value. ]]--
-function Token.New(type, lexeme, span, value)
+function Token.New(_type, lexeme, span, value)
 	if type(lexeme) ~= "string" then error("Expected a valid lexeme (string) when creating a token.") end
-	if type(type) ~= "string" or not Token.IsValidTokenType(type) then
+	if type(_type) ~= "string" or not Token.IsValidTokenType(_type) then
+		print(_type)
 		error("Expected a valid tokentype when creating token.")
 	end
-	if type(pos) ~= "table" or pos.From == nil or pos.To == nil then
+	if type(span) ~= "table" or span.From == nil or span.To == nil then
 		error("Expected a valid span when creating token.")
 	end
 
 
 	local self = {
-		Type = type,
+		Type = _type,
 		Lexeme = lexeme,
 		Span = span,
 		Value = value or 0 --[[ We do not care about the type of `value` as the type is dependent on the tokentype. ]]--
