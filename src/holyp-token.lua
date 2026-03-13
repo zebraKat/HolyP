@@ -43,9 +43,21 @@ Token.Types = {
 	GEq      = "TK_GEQ",           -- >=
 
 	--[[ +----TYPES----+ ]]--
+	TypeU0     = "TK_TYPE_U0",     -- U0 / Void
 	TypeInt    = "TK_TYPE_INT",    -- Int
 	TypeFloat  = "TK_TYPE_FLOAT",  -- Float
 	TypeString = "TK_TYPE_STRING", -- String
+
+	--[[
+	--	Introducing these for later.
+	--	Currently, since we aren't on Luau, we can't choose the size of intergers.
+	--]]
+	TypeU8  = "TK_TYPE_U8",  -- U8
+	TypeI8  = "TK_TYPE_I8",  -- I8
+	TypeU16 = "TK_TYPE_U16", -- U16
+	TypeI16 = "TK_TYPE_I16", -- I16
+	TypeU32 = "TK_TYPE_U32", -- U32
+	TypeF64 = "TK_TYPE_F64", -- F64
 
 	--[[ +----KEYWORDS----+ ]]--
 	KeywordIf      = "TK_KEYWORD_IF",      -- if
@@ -63,6 +75,10 @@ Token.Types = {
 	KeywordClass   = "TK_KEYWORD_CLASS",   -- class
 	KeywordUnion   = "TK_KEYWORD_UNION",   -- union
 
+	--[[
+	--	We need to remove the stuff below this and add a preprocessor.
+	--	The lexer shouldn't handle preproccessor stuff.
+	--]]
 	--[[ +----PREPROCCESSOR----+ ]]--
 	PreProcInclude   = "TK_PREPROC_INCLUDE", -- #include
 	PreProcAssert    = "TK_PREPROC_ASSERT",  -- #assert
@@ -73,6 +89,47 @@ Token.Types = {
 	DirLine = "TK_DIRECTIVE_LINE", -- __LINE__
 	DirFile = "TK_DIRECTIVE_FILE", -- __FILE__
 }
+
+--[[ This is a hashmap indexed by Keyword as Text to the TokenType of it. ]]--
+Token.Keywords = {
+	["if"]      = Token.Types.KeywordIf,
+	["else"]    = Token.Types.KeywordElse,
+	["switch"]  = Token.Types.KeywordSwitch,
+	["case"]    = Token.Types.KeywordCase,
+	["default"] = Token.Types.KeywordDefault,
+	["for"]     = Token.Types.KeywordFor,
+	["while"]   = Token.Types.KeywordWhile,
+	["do"]      = Token.Types.KeywordDo,
+	["break"]   = Token.Types.KeywordBreak,
+	["goto"]    = Token.Types.KeywordGoto,
+	["return"]  = Token.Types.KeywordReturn,
+	["const"]   = Token.Types.KeywordConst,
+	["class"]   = Token.Types.KeywordClass,
+	["union"]   = Token.Types.KeywordUnion,
+
+	["Int"]    = Token.Types.TypeInt,
+	["Float"]  = Token.Types.TypeFloat,
+	["String"] = Token.Types.TypeString,
+	 --[[ Since we currently have no sizing control, Void fits better than U0. ]]--
+	["Void"]   = Token.Types.TypeU0,
+	["U0"]     = Token.Types.TypeU0,
+	["U8"]     = Token.Types.TypeU8,
+	["I8"]     = Token.Types.TypeI8,
+	["U16"]    = Token.Types.TypeU16,
+	["I16"]    = Token.Types.TypeI16,
+	["U32"]    = Token.Types.TypeU32,
+	["I32"]    = Token.Types.TypeI32,
+	["F64"]    = Token.Types.TypeF64,
+	
+}
+--[[ Looks for the Keyword in the table and returns the TokenType if found ]]--
+function Token.IsKeyword(s)
+	for Index, TType in pairs(Token.Keywords) do
+		if Index == s then
+			return TType end
+	end
+	return nil
+end
 
 --[[ Returns whether the input is a valid token type ]]--
 function Token.IsValidTokenType(t)

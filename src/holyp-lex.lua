@@ -124,15 +124,22 @@ function Lexer.New(source, diagnostics)
 	local function TokenizeIdentifier()
 		local StartIndex = self.Index
 		local StartPosition = ShallowCopy(self.Position)
+		local TokenType = Token.Types.Identifier
 		local String = Eat()
 
-		while At() ~= "EOF" and (At() == '_' or IsAlphabetic(At()) and IsNumeric(At()) ) do
+		while 
+			At() ~= "EOF" and
+			(At() == '_' or (IsAlphabetic(At()) or IsNumeric(At())))
+		do
 			String = String..Eat() end
 
-		--[[ TODO: Check for keywords ]]--
+		local FoundKeyword = Token.IsKeyword(String)
+		if FoundKeyword ~= nil then
+			TokenType = FoundKeyword
+		end
 
 		return Token.New(
-			Token.Types.Identifier,
+			TokenType,
 			string.sub(self.Source, StartIndex, self.Index -1),
 			Span.New(StartPosition, ShallowCopy(self.Position)),
 			String
