@@ -2,6 +2,9 @@
 
 HolyP is an adaption of HolyC for polytoria.
 
+## Planned
+When Polytoria uses Luau, this project will use Luau's buffers but, a via wrapper so that way the project can maintain full compatability with Lua 5.2.
+
 ### Differences Between HolyC and HolyP
 Most of everything is the same but, there are different types
 and it removes the "print if its an expression".
